@@ -1,7 +1,7 @@
 %programa para abrir o csv que o python gerou e obter os vetores uteis para
 %calculo
 %abrir a tabela do csv
-CSV=readtable('C:\Users\SAMSUNG\Documents\Medida2406.csv','NumHeaderLines',1)
+CSV=readtable('C:\Users\SAMSUNG\Documents\Medida0407.csv','NumHeaderLines',1)
 %Mudar o nome do arquivo sempre que necessário
 
 %tornar a tabela vetores uteis
@@ -25,5 +25,6 @@ NUM=sqrt(NUM.^2)
 RaizD1=(OmbroX-CotX).^2+(OmbroY-CotY).^2+(OmbroZ-CotZ).^2
 RaizD2=(PunhoX-CotX).^2+(PunhoY-CotY).^2+(PunhoZ-CotZ).^2
 ThetaRad=NUM./(sqrt(RaizD1)+sqrt(RaizD2))
+ThetaRad=acos(ThetaRad) %tinha esquecido de colocar essa linha, o resultado anterior era só o valor do coseno
 %esse debaixo vai dar o menor angulo entre as retas em graus
 ThetaGraus=(ThetaRad.*360)./(2*pi)
