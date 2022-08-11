@@ -29,11 +29,17 @@ OmbroBA=vertcat(OmbroBA,OmbroZ')
 PunhoBN=[]
 CotBN=[]
 OmbroBN=[]
+syms a b c d
 % matrizMB deois ir atualizando a coluna no for
 for n = 1:Quantidade_dados
     difX=PunhoBA(1,n)-CotBA(1,n)
     difY=PunhoBA(2,n)-CotBA(2,n)
-    MMB=[difX difY 0;difY difX 0;0 0 1]
+    VBN1=[difX,difY]
+    VBN2=[difY,difX]
+    eq1=[1 0]==a*VBN1+b*VBN2
+    eq2=[0 1]==c*VBN1+d*VBN2
+    Sol=solve([eq1 eq2],[a b c d])
+    MMB=[Sol.a Sol.c 0;Sol.b Sol.d 0;0 0 1]
     PunhoBN=horzcat(PunhoBN,MMB*PunhoBA(:,n))
     CotBN = horzcat(CotBN,MMB*CotBA(:,n))
     OmbroBN=horzcat(OmbroBN,MMB*OmbroBA(:,n))
