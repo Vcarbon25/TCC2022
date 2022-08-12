@@ -29,17 +29,15 @@ OmbroBA=vertcat(OmbroBA,OmbroZ')
 PunhoBN=[]
 CotBN=[]
 OmbroBN=[]
-syms a b c d
 % matrizMB deois ir atualizando a coluna no for
 for n = 1:Quantidade_dados
     difX=PunhoBA(1,n)-CotBA(1,n)
     difY=PunhoBA(2,n)-CotBA(2,n)
-    VBN1=[difX,difY]
-    VBN2=[difY,difX]
-    eq1=[1 0]==a*VBN1+b*VBN2
-    eq2=[0 1]==c*VBN1+d*VBN2
-    Sol=solve([eq1 eq2],[a b c d])
-    MMB=[Sol.a Sol.c 0;Sol.b Sol.d 0;0 0 1]
+    S1=inv([difX, difY;difY, difX])*[1;0]
+    S2=inv([difY, difX;difX, difY])* [0;1]   
+    
+    
+    MMB=[S1(1) S2(1) 0;S1(2) S2(2) 0;0 0 1]
     PunhoBN=horzcat(PunhoBN,MMB*PunhoBA(:,n))
     CotBN = horzcat(CotBN,MMB*CotBA(:,n))
     OmbroBN=horzcat(OmbroBN,MMB*OmbroBA(:,n))
@@ -51,7 +49,7 @@ PunhoBNZ=PunhoBN(3,:)
 CotBNX=CotBN(1,:)
 CotBNY=CotBN(2,:)
 CotBNZ=CotBN(3,:)
-OmbroBNX=OmbroBN(1,:)
+OmbroBNX=OmbroBN(1,:);
 OmbroBNY=OmbroBN(2,:)
 OmbroBNZ=OmbroBN(3,:)
 %agora transpor esses vetores linha para colunas
