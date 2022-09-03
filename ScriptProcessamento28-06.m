@@ -18,56 +18,23 @@ PunhoY=table2array(CSV(:,8))
 PunhoZ=table2array(CSV(:,9))
 
 %a partir daqui começa o processamento numérico
-% aqui vai ser para fazer a mudança de base do mediapipe para a base
-Quantidade_dados = length(PunhoX)
-PunhoBA = vertcat(PunhoX',PunhoY');
-PunhoBA=vertcat(PunhoBA,PunhoZ')
-CotBA=vertcat(CotX',CotY');
-CotBA=vertcat(CotBA,CotZ')
-OmbroBA=vertcat(OmbroX',OmbroY');
-OmbroBA=vertcat(OmbroBA,OmbroZ')
-PunhoBN=[]
-CotBN=[]
-OmbroBN=[]
-% matrizMB deois ir atualizando a coluna no for
-for n = 1:Quantidade_dados
-    difX=PunhoBA(1,n)-CotBA(1,n)
-    difY=PunhoBA(2,n)-CotBA(2,n)
-    S1=inv([difX, difY;difY, difX])*[1;0]
-    S2=inv([difY, difX;difX, difY])* [0;1]   
-    
-    
-    MMB=[S1(1) S2(1) 0;S1(2) S2(2) 0;0 0 1]
-    PunhoBN=horzcat(PunhoBN,MMB*PunhoBA(:,n))
-    CotBN = horzcat(CotBN,MMB*CotBA(:,n))
-    OmbroBN=horzcat(OmbroBN,MMB*OmbroBA(:,n))
-end
-%com os pontos na base nova, coloca-los como colunas individuais novamente
-PunhoBNX=PunhoBN(1,:)
-PunhoBNY=PunhoBN(2,:)
-PunhoBNZ=PunhoBN(3,:)
-CotBNX=CotBN(1,:)
-CotBNY=CotBN(2,:)
-CotBNZ=CotBN(3,:)
-OmbroBNX=OmbroBN(1,:);
-OmbroBNY=OmbroBN(2,:)
-OmbroBNZ=OmbroBN(3,:)
-%agora transpor esses vetores linha para colunas
-PunhoBNX=PunhoBNX'
-PunhoBNY=PunhoBNY'
-PunhoBNZ=PunhoBNZ'
-CotBNX=CotBNX'
-CotBNY=CotBNY'
-CotBNZ=CotBNZ'
-OmbroBNX=OmbroBNX'
-OmbroBNY=OmbroBNY'
-OmbroBNZ=OmbroBNZ'
+%usando o pensamento do dia 02/09 que basta subtrair a coordenada y de 1
+%oara que a xoordenada agora esteja em base canonica
+aux=ones(length(OmbroX),1)
+disp('coordenadas mediapipe')
+PunhoY
+CotY
+OmbroY
+disp('coordenadas cirrigidas?')
+PunhoY=aux-PunhoY
+CotY=aux-CotY
+OmbroY=aux-OmbroY
 % a parte abaixo foi confirmada em testes dia 06/08/2022
-NUM = (OmbroBNX-CotBNX).*(PunhoBNX-CotBNX)+(OmbroBNY-CotBNY).*(PunhoBNY-CotBNY)+(OmbroBNZ-CotBNZ).*(PunhoBNZ-CotBNZ);
+NUM = (OmbroX-CotX).*(PunhoX-CotX)+(OmbroY-CotY).*(PunhoY-CotY)+(OmbroZ-CotZ).*(PunhoZ-CotZ);
 %NUM=sqrt(NUM.^2)
 
-RaizD1=(OmbroBNX-CotBNX).^2+(OmbroBNY-CotBNY).^2+(OmbroBNZ-CotBNZ).^2;
-RaizD2=(PunhoBNX-CotBNX).^2+(PunhoBNY-CotBNY).^2+(PunhoBNZ-CotBNZ).^2;
+RaizD1=(OmbroX-CotX).^2+(OmbroY-CotY).^2+(OmbroZ-CotZ).^2;
+RaizD2=(PunhoX-CotX).^2+(PunhoY-CotY).^2+(PunhoZ-CotZ).^2;
 ThetaRad=NUM./(sqrt(RaizD1).*sqrt(RaizD2));
 ThetaRad=acos(ThetaRad)
 %esse debaixo vai dar o menor angulo entre as retas em graus
