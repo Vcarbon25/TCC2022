@@ -1,7 +1,7 @@
 %programa para abrir o csv que o python gerou e obter os vetores uteis para
 %calculo
 %abrir a tabela do csv
-CSV=readtable('C:\Users\SAMSUNG\Documents\MedidaTCC90graus.csv','NumHeaderLines',1)
+CSV=readtable('C:\Users\SAMSUNG\Documents\MedidaTCC135graus.csv','NumHeaderLines',1)
 %Mudar o nome do arquivo sempre que necessário
 
 %tornar a tabela vetores uteis
@@ -17,6 +17,12 @@ PunhoX=table2array(CSV(:,7))
 PunhoY=table2array(CSV(:,8))
 PunhoZ=table2array(CSV(:,9))
 
+PunhoX=PunhoX*640
+PunhoY=PunhoY*480
+CotX=CotX*640
+CotY=CotY*480
+OmbroX=OmbroX*640
+OmbroY=OmbroY*480
 %a partir daqui começa o processamento numérico
 %usando o pensamento do dia 02/09 que basta subtrair a coordenada y de 1
 %oara que a xoordenada agora esteja em base canonica
